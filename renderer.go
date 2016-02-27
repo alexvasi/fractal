@@ -10,18 +10,17 @@ type Renderer struct {
 	screen mgl.Vec2
 	ortho  mgl.Mat4
 
-	texShader TexShader
+	fracShader FracShader
 }
 
 func NewRenderer(width, height float32, screenSize mgl.Vec2) *Renderer {
 	r := &Renderer{
 		size:   mgl.Vec2{width, height},
 		screen: screenSize,
-		ortho:  mgl.Ortho2D(0, width, 0, height),
 	}
 	gl.Enable(gl.MULTISAMPLE)
 
-	r.texShader.Init(r.size)
+	r.fracShader.Init(r.size)
 
 	return r
 }
@@ -32,9 +31,9 @@ func (r *Renderer) Clear() {
 }
 
 func (r *Renderer) Render() {
-	r.texShader.Render()
+	r.fracShader.Render()
 }
 
-func (r *Renderer) Plot(x, y float32, color mgl.Vec3) {
-	r.texShader.SetPixel(x, y, color)
+func (r *Renderer) SetCamera(mat mgl.Mat4) {
+	r.fracShader.SetCamera(mat)
 }

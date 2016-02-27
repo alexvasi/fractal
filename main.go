@@ -20,8 +20,8 @@ func init() {
 func main() {
 	const (
 		title  = "Fractal"
-		width  = 800
-		height = 450
+		width  = 1366
+		height = 768
 	)
 
 	fullscreen := flag.Bool("fs", false, "fullscreen mode")
@@ -37,14 +37,13 @@ func main() {
 
 	input := NewInput(window, *fullscreen)
 	renderer := NewRenderer(width, height, screenSize)
-	mandelbrot := NewMandelbrot(width, height)
 	camera := NewCamera(input, 0, 0, width, height)
 	timer := NewTimer()
 
 	for !window.ShouldClose() {
 		renderer.Clear()
 		camera.Update(timer.DT)
-		mandelbrot.Draw(renderer, camera.TRS)
+		renderer.SetCamera(camera.Proj())
 		renderer.Render()
 
 		window.SwapBuffers()

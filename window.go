@@ -16,7 +16,6 @@ func InitGLFW() error {
 	glfw.WindowHint(glfw.OpenGLProfile, glfw.OpenGLCoreProfile)
 	glfw.WindowHint(glfw.OpenGLForwardCompatible, glfw.True)
 	glfw.WindowHint(glfw.Resizable, glfw.False)
-	//glfw.WindowHint(glfw.RefreshRate, 60)
 	glfw.WindowHint(glfw.Samples, 4)
 
 	return nil

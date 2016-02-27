@@ -74,7 +74,7 @@ func (i *Input) Process() {
 	i.Scale = mgl.Clamp(i.Scale, -1, 1)
 
 	i.Rotate = mgl.Clamp(i.Rotate, -1, 1)
-	if mgl.Abs(i.Rotate) < 0.3 {
+	if mgl.Abs(i.Rotate) < 0.2 {
 		i.Rotate = 0
 	}
 }

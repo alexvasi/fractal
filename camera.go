@@ -7,8 +7,6 @@ import (
 )
 
 type Camera struct {
-	TRS mgl.Mat3
-
 	size          mgl.Vec2
 	pos           mgl.Vec2
 	origPos       mgl.Vec2
@@ -33,7 +31,6 @@ func NewCamera(input *Input, x, y, width, height float32) *Camera {
 		rotateSpeed:   math.Pi,
 		input:         input,
 	}
-	c.calcTRS()
 
 	return c
 }
@@ -54,12 +51,10 @@ func (c *Camera) Update(dt float32) {
 		c.scale = 1
 		c.angle = 0
 	}
-
-	c.calcTRS()
 }
 
-func (c *Camera) calcTRS() {
-	mat := mgl.Scale2D(c.scale, c.scale)
-	mat = mgl.HomogRotate2D(c.angle).Mul3(mat)
-	c.TRS = mgl.Translate2D(c.pos.X(), c.pos.Y()).Mul3(mat)
+func (c *Camera) Proj() mgl.Mat4 {
+	mat := mgl.Scale3D(c.scale, c.scale, 1)
+	mat = mgl.HomogRotate3DZ(c.angle).Mul4(mat)
+	return mgl.Translate3D(c.pos.X(), c.pos.Y(), 0).Mul4(mat)
 }
