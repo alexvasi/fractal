@@ -38,12 +38,14 @@ func main() {
 	input := NewInput(window, *fullscreen)
 	renderer := NewRenderer(width, height, screenSize)
 	camera := NewCamera(input, 0, 0, width, height)
+	fractal := NewFractal(input)
 	timer := NewTimer()
 
 	for !window.ShouldClose() {
 		renderer.Clear()
 		camera.Update(timer.DT)
-		renderer.SetCamera(camera.Proj())
+		fractal.Update()
+		renderer.SetFractal(camera.Proj(), fractal.Seed())
 		renderer.Render()
 
 		window.SwapBuffers()

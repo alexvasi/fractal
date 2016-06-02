@@ -10,10 +10,13 @@ type Input struct {
 	Scale      float32
 	Rotate     float32
 	ResetCam   bool
+	Next       bool
+	Prev       bool
 	Fullscreen ToggleSwitch
 	LockFrames ToggleSwitch
 
-	window *glfw.Window
+	window   *glfw.Window
+	joyState [19]bool
 }
 
 type ToggleSwitch struct {
@@ -31,12 +34,14 @@ func NewInput(w *glfw.Window, fullscreen bool) *Input {
 }
 
 func (i *Input) Process() {
-	i.Fullscreen.Toggled = false
-	i.LockFrames.Toggled = false
 	i.Dir = mgl.Vec2{0, 0}
 	i.Scale = 0
 	i.Rotate = 0
 	i.ResetCam = false
+	i.Next = false
+	i.Prev = false
+	i.Fullscreen.Toggled = false
+	i.LockFrames.Toggled = false
 
 	glfw.PollEvents()
 
@@ -51,16 +56,17 @@ func (i *Input) Process() {
 		i.Scale = axes[3] * -1
 	}
 
-	if len(axes) > 15 {
-		i.Scale += axes[15]
-		i.Scale -= axes[14]
-	}
-
 	buttons := glfw.GetJoystickButtons(glfw.Joystick1)
-	if len(buttons) > 12 {
-		if buttons[12] > 0 {
-			i.ResetCam = true
-		}
+	if i.isJoyPressed(10, buttons) {
+		i.Prev = true
+		i.ResetCam = true
+	}
+	if i.isJoyPressed(11, buttons) {
+		i.Next = true
+		i.ResetCam = true
+	}
+	if i.isJoyPressed(12, buttons) {
+		i.ResetCam = true
 	}
 
 	i.handleDirButtons(&i.Dir[0], glfw.KeyA, glfw.KeyD)
@@ -95,6 +101,23 @@ func (i *Input) isPressed(keys ...glfw.Key) bool {
 	return false
 }
 
+func (i *Input) isJoyPressed(btnIdx int, btnState []byte) bool {
+	if btnIdx >= len(btnState) || btnIdx >= len(i.joyState) {
+		return false
+	}
+
+	if btnState[btnIdx] > 0 {
+		if i.joyState[btnIdx] {
+			return false
+		}
+		i.joyState[btnIdx] = true
+		return true
+	}
+
+	i.joyState[btnIdx] = false
+	return false
+}
+
 func (i *Input) keyCallback(w *glfw.Window, key glfw.Key, scan int,
 	action glfw.Action, m glfw.ModifierKey) {
 
@@ -110,6 +133,9 @@ func (i *Input) keyCallback(w *glfw.Window, key glfw.Key, scan int,
 	case glfw.KeyEscape:
 		i.window.SetShouldClose(true)
 	case glfw.KeyR:
+		i.ResetCam = true
+	case glfw.KeyTab:
+		i.Next = true
 		i.ResetCam = true
 	}
 }

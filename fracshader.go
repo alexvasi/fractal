@@ -10,9 +10,10 @@ type FracShader struct {
 	vao     uint32
 	vbo     uint32
 
-	size   mgl.Vec2
-	scale  float32
-	uniCam int32
+	size    mgl.Vec2
+	scale   float32
+	uniCam  int32
+	uniSeed int32
 }
 
 const fracVertexSrc string = `
@@ -35,8 +36,9 @@ const fracFragSrc string = `
 #version 150 core
 
 in vec2 vPos;
-
 out vec4 outColor;
+
+uniform vec2 seed;
 
 void main() {
     const float esc = 200;
@@ -44,9 +46,14 @@ void main() {
 
     float i = 0;
     float x = vPos.x, y = vPos.y, xT, yT;
+    float xSeed = seed.x, ySeed = seed.y;
+    if (xSeed == 0 && ySeed == 0) {
+        xSeed = vPos.x;
+        ySeed = vPos.y;
+    }
     for (; i < esc && (x*x+y*y) < 65536; i++) {
-        xT = x*x-y*y+vPos.x;
-        yT = 2*x*y+vPos.y;
+        xT = x*x-y*y+xSeed;
+        yT = 2*x*y+ySeed;
         x = xT;
         y = yT;
     }
@@ -84,6 +91,9 @@ func (s *FracShader) Init(size mgl.Vec2) {
 	s.uniCam = gl.GetUniformLocation(s.program, gl.Str("cam\x00"))
 	gl.UniformMatrix4fv(s.uniCam, 1, false, &cam[0])
 
+	s.uniSeed = gl.GetUniformLocation(s.program, gl.Str("seed\x00"))
+	gl.Uniform2f(s.uniSeed, 0, 0)
+
 	s.initArrayBuffer()
 }
 
@@ -98,6 +108,10 @@ func (s *FracShader) Render() {
 func (s *FracShader) SetCamera(cam mgl.Mat4) {
 	mat := mgl.Scale3D(s.scale, s.scale, 1).Mul4(cam)
 	gl.UniformMatrix4fv(s.uniCam, 1, false, &mat[0])
+}
+
+func (s *FracShader) SetSeed(seed mgl.Vec2) {
+	gl.Uniform2f(s.uniSeed, seed.X(), seed.Y())
 }
 
 func (s *FracShader) initArrayBuffer() {
