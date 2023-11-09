@@ -1,0 +1,11 @@
+github.com/go-gl/gl v0.0.0-20231021071112-07e5d0ea2e71 h1:5BVwOaUSBTlVZowGO6VZGw2H/zl9nrd3eCZfYV+NfQA=
+github.com/go-gl/gl v0.0.0-20231021071112-07e5d0ea2e71/go.mod h1:9YTyiznxEY1fVinfM7RvRcjRHbw2xLBJ3AAGIT0I4Nw=
+github.com/go-gl/glfw v0.0.0-20231102141658-eca20e8abded h1:1/NeYnr6K4/ZRTG5PUkCZNAA08R10c5AwnhdC4YpQGA=
+github.com/go-gl/glfw v0.0.0-20231102141658-eca20e8abded/go.mod h1:wyvWpaEu9B/VQiV1jsPs7Mha9I7yto/HqIBw197ZAzk=
+github.com/go-gl/mathgl v1.1.0 h1:0lzZ+rntPX3/oGrDzYGdowSLC2ky8Osirvf5uAwfIEA=
+github.com/go-gl/mathgl v1.1.0/go.mod h1:yhpkQzEiH9yPyxDUGzkmgScbaBVlhC06qodikEM0ZwQ=
+github.com/lucasb-eyer/go-colorful v1.2.0 h1:1nnpGOrhyZZuNyfu1QjKiUICQ74+3FNCN69Aj6K7nkY=
+github.com/lucasb-eyer/go-colorful v1.2.0/go.mod h1:R4dSotOR9KMtayYi1e77YzuveK+i7ruzyGqttikkLy0=
+golang.org/x/image v0.0.0-20190321063152-3fc05d484e9f h1:FO4MZ3N56GnxbqxGKqh+YTzUWQ2sDwtFQEZgLOxh9Jc=
+golang.org/x/image v0.0.0-20190321063152-3fc05d484e9f/go.mod h1:kZ7UVZpmo3dzQBMxlp+ypCbDeSB+sBbTgSJuh5dn5js=
+golang.org/x/text v0.3.0/go.mod h1:NqM8EUOU14njkJ3fqMW+pc6Ldnwhi/IjpwHt7yyuwOQ=
