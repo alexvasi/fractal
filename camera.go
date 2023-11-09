@@ -46,7 +46,7 @@ func (c *Camera) Update(dt float32) {
 	p := c.input.Dir.Mul(dt * c.moveSpeed * c.scale)
 	c.pos = c.pos.Add(mgl.Rotate2D(c.angle).Mul2x1(p))
 
-	if c.input.ResetCam {
+	if c.input.ResetCam || c.input.NextFractal || c.input.PrevFractal {
 		c.pos = c.origPos
 		c.scale = 1
 		c.angle = 0

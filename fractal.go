@@ -30,12 +30,12 @@ func (f *Fractal) Seed() mgl.Vec2 {
 }
 
 func (f *Fractal) Update() {
-	if f.input.Next {
+	if f.input.NextFractal {
 		f.index += 1
 		if f.index+1 > len(f.seeds) {
 			f.index = 0
 		}
-	} else if f.input.Prev {
+	} else if f.input.PrevFractal {
 		f.index -= 1
 		if f.index < 0 {
 			f.index = len(f.seeds) - 1

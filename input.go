@@ -6,14 +6,16 @@ import (
 )
 
 type Input struct {
-	Dir        mgl.Vec2
-	Scale      float32
-	Rotate     float32
-	ResetCam   bool
-	Next       bool
-	Prev       bool
-	Fullscreen ToggleSwitch
-	LockFrames ToggleSwitch
+	Dir         mgl.Vec2
+	Scale       float32
+	Rotate      float32
+	ResetCam    bool
+	NextFractal bool
+	PrevFractal bool
+	NextColor   bool
+	PrevColor   bool
+	Fullscreen  ToggleSwitch
+	LockFrames  ToggleSwitch
 
 	window   *glfw.Window
 	joyState [19]bool
@@ -38,8 +40,10 @@ func (i *Input) Process() {
 	i.Scale = 0
 	i.Rotate = 0
 	i.ResetCam = false
-	i.Next = false
-	i.Prev = false
+	i.NextFractal = false
+	i.PrevFractal = false
+	i.NextColor = false
+	i.PrevColor = false
 	i.Fullscreen.Toggled = false
 	i.LockFrames.Toggled = false
 
@@ -57,13 +61,17 @@ func (i *Input) Process() {
 	}
 
 	buttons := glfw.GetJoystickButtons(glfw.Joystick1)
-	if i.isJoyPressed(10, buttons) {
-		i.Prev = true
-		i.ResetCam = true
+	if i.isJoyPressed(10, buttons) || i.isJoyPressed(7, buttons) {
+		i.PrevFractal = true
 	}
-	if i.isJoyPressed(11, buttons) {
-		i.Next = true
-		i.ResetCam = true
+	if i.isJoyPressed(11, buttons) || i.isJoyPressed(5, buttons) {
+		i.NextFractal = true
+	}
+	if i.isJoyPressed(8, buttons) || i.isJoyPressed(6, buttons) {
+		i.PrevColor = true
+	}
+	if i.isJoyPressed(9, buttons) || i.isJoyPressed(4, buttons) {
+		i.NextColor = true
 	}
 	if i.isJoyPressed(12, buttons) {
 		i.ResetCam = true
@@ -78,11 +86,7 @@ func (i *Input) Process() {
 
 	i.normalizeDir(&i.Dir)
 	i.Scale = mgl.Clamp(i.Scale, -1, 1)
-
 	i.Rotate = mgl.Clamp(i.Rotate, -1, 1)
-	if mgl.Abs(i.Rotate) < 0.2 {
-		i.Rotate = 0
-	}
 }
 
 func (i *Input) SetWindow(w *glfw.Window) {
@@ -135,8 +139,11 @@ func (i *Input) keyCallback(w *glfw.Window, key glfw.Key, scan int,
 	case glfw.KeyR:
 		i.ResetCam = true
 	case glfw.KeyTab:
-		i.Next = true
-		i.ResetCam = true
+		i.NextFractal = true
+	case glfw.KeyZ:
+		i.PrevColor = true
+	case glfw.KeyX:
+		i.NextColor = true
 	}
 }
 

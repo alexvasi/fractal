@@ -34,7 +34,8 @@ func (r *Renderer) Render() {
 	r.fracShader.Render()
 }
 
-func (r *Renderer) SetFractal(mat mgl.Mat4, seed mgl.Vec2) {
+func (r *Renderer) SetFractal(mat mgl.Mat4, seed mgl.Vec2, colors []uint8) {
 	r.fracShader.SetCamera(mat)
 	r.fracShader.SetSeed(seed)
+	r.fracShader.SetColors(colors)
 }
